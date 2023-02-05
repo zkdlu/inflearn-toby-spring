@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Objects;
-
 @RequestMapping
 @RestController
 class HelloApi implements ApplicationContextAware {
@@ -22,7 +20,10 @@ class HelloApi implements ApplicationContextAware {
 
     @GetMapping("/hello")
     String hello(String name) {
-        return helloService.sayHello(Objects.requireNonNull(name));
+
+        if (name == null || name.trim().length() == 0) throw new IllegalArgumentException();
+
+        return helloService.sayHello(name);
     }
 
     @Override
