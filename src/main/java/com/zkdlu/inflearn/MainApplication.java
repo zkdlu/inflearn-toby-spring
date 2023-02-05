@@ -17,6 +17,7 @@ public class MainApplication {
     public static void main(String[] args) {
         var applicationContext = new GenericApplicationContext();
         applicationContext.registerBean(HelloApi.class);
+        applicationContext.registerBean(SimpleHelloService.class);
         applicationContext.refresh();
 
         var serverFactory = new TomcatServletWebServerFactory();
