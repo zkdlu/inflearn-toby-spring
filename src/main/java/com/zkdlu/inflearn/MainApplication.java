@@ -1,5 +1,6 @@
 package com.zkdlu.inflearn;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,6 @@ public class MainApplication {
     }
 
     public static void main(String[] args) {
-        MySpringApplication.run(MainApplication.class, args);
+        SpringApplication.run(MainApplication.class, args);
     }
 }
