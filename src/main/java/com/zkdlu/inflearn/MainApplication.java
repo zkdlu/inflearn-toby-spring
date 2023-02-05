@@ -17,6 +17,8 @@ public class MainApplication {
     public static void main(String[] args) {
         var serverFactory = new TomcatServletWebServerFactory();
         WebServer webServer = serverFactory.getWebServer(servletContext -> {
+            HelloApi helloApi = new HelloApi();
+
             servletContext.addServlet("frontcontroller", new HttpServlet() {
                 @Override
                 protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
@@ -24,9 +26,13 @@ public class MainApplication {
 
                     if (req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
                         String name = req.getParameter("name");
+
+                        String ret = helloApi.hello(name);
+
                         resp.setStatus(HttpStatus.OK.value());
                         resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-                        resp.getWriter().println("Hello " + name);
+                        resp.getWriter().println(ret);
+
                     } else if (req.getRequestURI().equals("/users")) {
 
                     } else {
