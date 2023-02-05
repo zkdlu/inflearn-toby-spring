@@ -7,18 +7,24 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 public class MainApplication {
     public static void main(String[] args) {
-        var applicationContext = new GenericWebApplicationContext();
+        var applicationContext = new GenericWebApplicationContext() {
+            @Override
+            protected void onRefresh() {
+                super.onRefresh();
+
+                var serverFactory = new TomcatServletWebServerFactory();
+                WebServer webServer = serverFactory.getWebServer(servletContext -> {
+                    servletContext.addServlet("dispatcherServlet",
+                            new DispatcherServlet(this)
+                    ).addMapping("/*");
+                });
+
+                webServer.start();
+            }
+        };
+
         applicationContext.registerBean(HelloApi.class);
         applicationContext.registerBean(SimpleHelloService.class);
         applicationContext.refresh();
-
-        var serverFactory = new TomcatServletWebServerFactory();
-        WebServer webServer = serverFactory.getWebServer(servletContext -> {
-            servletContext.addServlet("dispatcherServlet",
-                    new DispatcherServlet(applicationContext)
-            ).addMapping("/*");
-        });
-
-        webServer.start();
     }
 }
