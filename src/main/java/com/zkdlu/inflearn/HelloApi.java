@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Objects;
 
 @RequestMapping
+@MyComponent
 class HelloApi {
 
     private final HelloService helloService;
