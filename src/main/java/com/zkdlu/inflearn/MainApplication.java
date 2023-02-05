@@ -1,11 +1,33 @@
 package com.zkdlu.inflearn;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
-@SpringBootApplication
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 public class MainApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MainApplication.class, args);
+        var serverFactory = new TomcatServletWebServerFactory();
+        WebServer webServer = serverFactory.getWebServer(servletContext -> {
+            servletContext.addServlet("hello", new HttpServlet() {
+                @Override
+                protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+                    String name = req.getParameter("name");
+
+                    resp.setStatus(HttpStatus.OK.value());
+                    resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                    resp.getWriter().println("Hello " + name);
+                }
+            }).addMapping("/hello");
+        });
+
+        webServer.start();
     }
 }
