@@ -1,5 +1,6 @@
 package com.zkdlu.inflearn;
 
+import com.zkdlu.config.MySpringBootApplication;
 import org.springframework.boot.SpringApplication;
 
 @MySpringBootApplication
